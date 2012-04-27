@@ -1,4 +1,4 @@
-{application, nosh_bin,
+{application, bin,
  [
   {description, ""},
   {vsn, "1"},
