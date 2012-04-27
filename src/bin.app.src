@@ -7,6 +7,6 @@
                   kernel,
                   stdlib
                  ]},
-  {mod, { nosh_bin_app, []}},
+  {mod, { bin_app, []}},
   {env, []}
  ]}.
