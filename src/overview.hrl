@@ -24,3 +24,6 @@
 
 % @doc This is the built-in commands library package for 
 % <b><a href="http://github.com/beadsland/nosh">nosh</a></b>.
+%
+% More documentation to come.
+% @end
