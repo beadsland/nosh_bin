@@ -1,6 +1,6 @@
 
 
-#The nosh_bin application#
+#The bin application#
 
 
 ##Modules##
