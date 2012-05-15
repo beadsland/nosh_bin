@@ -1,10 +1,10 @@
 %% CDDL HEADER START
 %% -----------------------------------------------------------------------
-%% The contents of this file are subject to the Common Development and 
-%% Distribution License, Version 1.0 (the "License"); you may not use 
-%% this file except in compliance with the License.  You should have 
-%% received a copy of the Common Development and Distribution License 
-%% along with this software.  If not, it can be retrieved online at 
+%% The contents of this file are subject to the Common Development and
+%% Distribution License, Version 1.0 (the "License"); you may not use
+%% this file except in compliance with the License.  You should have
+%% received a copy of the Common Development and Distribution License
+%% along with this software.  If not, it can be retrieved online at
 %% http://www.opensource.org/licenses/CDDL-1.0
 %%
 %% Software distributed under the License is distributed on an "AS IS"
@@ -22,8 +22,10 @@
 %% -----------------------------------------------------------------------
 %% CDDL HEADER END
 
-% @doc This is the built-in commands library package for 
-% <b><a href="http://github.com/beadsland/nosh">nosh</a></b>.
-%
-% More documentation to come.
+%% @doc This is the Bourne shell built-ins command set for the
+%% <a href="http://github.com/beadsland/nosh">`nosh'</a> project.
+%%
+%% When finished, this sub-project will supply a complete set of
+%% <a href="http://github.com/beadsland/pose">`pose'</a>-compatible
+%% command modules for emulating Bourne shell functionality.
 % @end

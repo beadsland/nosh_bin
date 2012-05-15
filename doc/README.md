@@ -1,6 +1,6 @@
 
 
-#Welcome to nosh built-ins (nosh_bin)#
+#Welcome to the `nosh' Bourne shell built-ins command set (nosh_bin)#
 
 
 Copyright (c) 2012 Beads D. Land-Trujillo
@@ -9,10 +9,18 @@ __Version:__ 0.0.1
 
 __Authors:__ Beads D. Land-Trujillo (_web site:_ [`http://twitter.com/beadsland`](http://twitter.com/beadsland)).
 
-This is the built-in commands library package for
- __[nosh](http://github.com/beadsland/nosh)__.
+__References__* See [Bourne Shell Builtins](http://goo.gl/AAUaX)
+for commands emulated in this package.
+* This is a subproject of the
+[`nosh`](http://github.com/beadsland/nosh) application.
 
- More documentation to come.
+
+This is the Bourne shell built-ins command set for the
+  [`nosh`](http://github.com/beadsland/nosh) project.
+ 
+  When finished, this sub-project will supply a complete set of
+  [`pose`](http://github.com/beadsland/pose)-compatible
+  command modules for emulating Bourne shell functionality.
 
 ##Modules##
 
