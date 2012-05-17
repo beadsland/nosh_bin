@@ -47,6 +47,8 @@ HIDE_EDOC_WARN	=	grep -v "cannot handle URI.*edoc-info"
 SUCCINCT	=	grep -v "Entering directory" | grep -v "Leaving directory"
 
 ERL_PATH	= 	-pa ebin
+POSURE		=	-pa deps/pose/ebin -s posure
+SUPERL		=	-pa deps/superl/ebin -s superl $(POSURE)
 
 #
 # Build rules start
@@ -57,7 +59,7 @@ all:	push good
 run:	current good
 
 good:	compile
-	@erl $(ERL_PATH) -i deps -noshell -s superl -s init stop
+	@erl $(ERL_PATH) -i deps -noshell $(SUPERL) -s init stop
 		
 compile:
 	@rebar compile doc | $(HIDE_EDOC_WARN) | $(SUCCINCT)
