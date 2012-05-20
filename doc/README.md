@@ -18,10 +18,3 @@ for commands emulated in this package.
 
 This is the Bourne shell built-ins command set for the[`nosh`](http://github.com/beadsland/nosh) project.When finished, this sub-project will supply a complete set of[`pose`](http://github.com/beadsland/pose)-compatible
   command modules for emulating Bourne shell functionality.
-
-##Modules##
-
-
-<table width="100%" border="0" summary="list of modules">
-<tr><td><a href="echo.md" class="module">echo</a></td></tr></table>
-
