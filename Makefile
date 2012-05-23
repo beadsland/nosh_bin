@@ -62,6 +62,7 @@ good:	compile
 	@erl $(ERL_PATH) -i deps -noshell $(SUPERL) -s init stop
 		
 compile:
+	@rm -f doc/edoc-info *.dump
 	@rebar compile doc | $(HIDE_EDOC_WARN) | $(SUCCINCT)
 
 doc:	compile
