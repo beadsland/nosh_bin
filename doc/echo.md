@@ -1,7 +1,6 @@
 
 
 #Module ?module#
-
 * [Description](#description)
 * [Function Index](#index)
 * [Function Details](#functions)
@@ -32,7 +31,7 @@ __Authors:__ Beads D. Land-Trujillo (_web site:_ [`http://twitter.com/beadsland`
 ###run/3##
 
 
-<pre>run(IO::#std{}, ARG::#arg{}, ENV::#env{}) -&gt; no_return()</pre>
+	run(IO::#std{}, ARG::#arg{}, ENV::#env{}) -&gt; no_return()
 <br></br>
 
 
@@ -41,7 +40,7 @@ __Authors:__ Beads D. Land-Trujillo (_web site:_ [`http://twitter.com/beadsland`
 ###start/0##
 
 
-<pre>start() -&gt; no_return()</pre>
+	start() -&gt; no_return()
 <br></br>
 
 
@@ -50,7 +49,7 @@ Equivalent to [`start([])`](#start-1).<a name="start-1"></a>
 ###start/1##
 
 
-<pre>start(Param::[atom()]) -&gt; no_return()</pre>
+	start(Param::[atom()]) -&gt; no_return()
 <br></br>
 
 
