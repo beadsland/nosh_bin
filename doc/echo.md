@@ -1,7 +1,8 @@
 
 
-#Module ?module#
+#Module echo#
 * [Description](#description)
+* [Data Types](#types)
 * [Function Index](#index)
 * [Function Details](#functions)
 
@@ -14,7 +15,20 @@ __Version:__ 0.1.0
 
 __Behaviours:__ [`gen_command`](gen_command.md).
 
-__Authors:__ Beads D. Land-Trujillo (_web site:_ [`http://twitter.com/beadsland`](http://twitter.com/beadsland)).<a name="index"></a>
+__Authors:__ Beads D. Land-Trujillo (_web site:_ [`http://twitter.com/beadsland`](http://twitter.com/beadsland)).
+<a name="types"></a>
+
+##Data Types##
+
+
+
+
+###<a name="type-env_prop">env_prop()</a>##
+
+
+
+	env_prop() = atom() | {atom(), string()}
+<a name="index"></a>
 
 ##Function Index##
 
@@ -31,7 +45,7 @@ __Authors:__ Beads D. Land-Trujillo (_web site:_ [`http://twitter.com/beadsland`
 ###run/3##
 
 
-	run(IO::#std{}, ARG::#arg{}, ENV::#env{}) -&gt; no_return()
+	run(IO::#std{in = pid(), out = pid(), err = pid(), echo = boolean()}, ARG::#arg{cmd = atom(), v = list()}, ENV::#env{plist = [<a href="#type-env_prop">env_prop()</a>]}) -> no_return()
 <br></br>
 
 
