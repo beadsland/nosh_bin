@@ -6,7 +6,7 @@
 %%
 %%======================================
 
-{application, bin,
+{application, nosh_bin,
  [
   {description, ""},
   {vsn, "1"},
@@ -15,6 +15,6 @@
                   kernel,
                   stdlib
                  ]},
-  {mod, { bin_app, []}},
+  {mod, { nosh_bin_app, []}},
   {env, []}
  ]}.
