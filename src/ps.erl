@@ -120,14 +120,15 @@ get_info(Pid) ->
   Info = erlang:process_info(Pid, ItemSpec),
   stringify_info([{pid, Pid} | Info]).
 
--define(P(X), io_lib:format("~p", [proplists:get_value(X, InfoList)])).
+-define(GET(X), proplists:get_value(X, InfoList)).
+-define(P(X), io_lib:format("~p", [?GET(X)])).
 
 stringify_info(InfoList) ->
   Memory = proplists:get_value(memory, InfoList),
   StringList = [{memory_kilo, kilo_value(Memory)},
                 {messages, ?P(message_queue_len)},
                 {pid, ?P(pid)},
-                {current, ?P(current_function)}
+                {current, erlang:element(1, ?GET(current_function))}
                ],
   lists:append(StringList, InfoList).
 
