@@ -91,13 +91,15 @@ run(IO, ARG, ENV) -> gen_command:run(IO, ARG, ENV, ?MODULE).
 %% @private Callback entry point for gen_command behaviour.
 do_run(IO, _ARG) ->
     Processes = erlang:processes(),
-    Formats = [{pid, "~11s"}, {memory_kilo, "~6s"},
-                             {messages, "~6s"},
-                             {current, "~s"}
+    Formats = [{pid, "~11s"}, {memory_kilo, "~5s"},
+                              {messages, "~5s"},
+                              {current, "~15s"},
+                              {command, "~s"}
               ],
     Headers = [{pid, "PID"}, {memory_kilo, "RES"},
                              {messages, "MSGS"},
-                             {current, "CURRENT"}
+                             {current, "CURRENT"},
+                             {command, "COMMAND"}
               ],
     ProcInfo = [get_info(X) || X <- Processes],
     Format = string:join([erlang:element(2, X) || X <- Formats], "  "),
@@ -116,21 +118,26 @@ print_out(IO, Format, Keys, [PropList | Tail]) ->
   print_out(IO, Format, Keys, Tail).
 
 get_info(Pid) ->
-  ItemSpec = [current_function, memory, message_queue_len],
+  ItemSpec = [current_function, memory, message_queue_len, dictionary],
   Info = erlang:process_info(Pid, ItemSpec),
   stringify_info([{pid, Pid} | Info]).
 
 -define(GET(X), proplists:get_value(X, InfoList)).
--define(P(X), io_lib:format("~p", [?GET(X)])).
+-define(P(X), io_lib:format("~p", [X])).
 
 stringify_info(InfoList) ->
   Memory = proplists:get_value(memory, InfoList),
   StringList = [{memory_kilo, kilo_value(Memory)},
-                {messages, ?P(message_queue_len)},
-                {pid, ?P(pid)},
-                {current, erlang:element(1, ?GET(current_function))}
+                {messages, ?P(?GET(message_queue_len))},
+                {pid, ?P(?GET(pid))},
+                {current, erlang:element(1, ?GET(current_function))},
+                {command, proplists:get_value(command, ?GET(dictionary))}
                ],
   lists:append(StringList, InfoList).
+
+%dict_command(InfoList) ->
+%  Dict = ?GET(dictionary),
+%  proplists:get_value(command, ).
 
 kilo_value(Value) when Value < 1024*1024 ->
   io_lib:format("~p", [erlang:round(Value / 1024)]);
