@@ -135,10 +135,6 @@ stringify_info(InfoList) ->
                ],
   lists:append(StringList, InfoList).
 
-%dict_command(InfoList) ->
-%  Dict = ?GET(dictionary),
-%  proplists:get_value(command, ).
-
 kilo_value(Value) when Value < 1024*1024 ->
   io_lib:format("~p", [erlang:round(Value / 1024)]);
 kilo_value(Value) ->
