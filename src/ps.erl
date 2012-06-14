@@ -54,6 +54,7 @@
 -import(proplists).
 -import(io_lib).
 -import(string).
+-import(lists).
 
 %%
 %% Exported Functions
@@ -90,16 +91,16 @@ run(IO, ARG, ENV) -> gen_command:run(IO, ARG, ENV, ?MODULE).
 %% @private Callback entry point for gen_command behaviour.
 do_run(IO, _ARG) ->
     Processes = erlang:processes(),
-    Formats = [{pid, "~11p"}, {memory_kilo, "~6s"},
-                             {message_queue_len, "~6p"},
-                             {current_function, "~p"}
+    Formats = [{pid, "~11s"}, {memory_kilo, "~6s"},
+                             {messages, "~6s"},
+                             {current, "~s"}
               ],
     Headers = [{pid, "PID"}, {memory_kilo, "RES"},
-                             {message_queue_len, "MSGS"},
-                             {current_function, "CURRENT"}
+                             {messages, "MSGS"},
+                             {current, "CURRENT"}
               ],
     ProcInfo = [get_info(X) || X <- Processes],
-    Format = string:join([erlang:element(2, X) || X <- Formats], " "),
+    Format = string:join([erlang:element(2, X) || X <- Formats], "  "),
     Keys = [erlang:element(1, X) || X <- Headers],
 
     print_out(IO, Format ++ "~n", Keys, [Headers | ProcInfo]).
@@ -117,12 +118,18 @@ print_out(IO, Format, Keys, [PropList | Tail]) ->
 get_info(Pid) ->
   ItemSpec = [current_function, memory, message_queue_len],
   Info = erlang:process_info(Pid, ItemSpec),
-  [{pid, Pid} | add_memory_kilo(Info)].
+  stringify_info([{pid, Pid} | Info]).
 
-add_memory_kilo(InfoList) ->
+-define(P(X), io_lib:format("~p", [proplists:get_value(X, InfoList)])).
+
+stringify_info(InfoList) ->
   Memory = proplists:get_value(memory, InfoList),
-  MemoryKilo = kilo_value(Memory),
-  [{memory_kilo, MemoryKilo} | InfoList].
+  StringList = [{memory_kilo, kilo_value(Memory)},
+                {messages, ?P(message_queue_len)},
+                {pid, ?P(pid)},
+                {current, ?P(current_function)}
+               ],
+  lists:append(StringList, InfoList).
 
 kilo_value(Value) when Value < 1024*1024 ->
   io_lib:format("~p", [erlang:round(Value / 1024)]);
