@@ -17,8 +17,6 @@ for commands emulated in this package.
 
 __<font color="red">To do</font>__
 <br></br>
-* <font color="red">make todo when less than 7
-</font>
 * <font color="red">cat one-line under nosh
 </font>
 * <font color="red">cat one-line under pose
