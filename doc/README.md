@@ -17,8 +17,6 @@ for commands emulated in this package.
 
 __<font color="red">To do</font>__
 <br></br>
-* <font color="red">period as captln eof under pose
-</font>
 * <font color="red">cat multiline
 </font>
 * <font color="red">cat preserve eof</font>
