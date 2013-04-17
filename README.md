@@ -39,6 +39,7 @@ When finished, this sub-project will supply a complete set of
 
 
 <table width="100%" border="0" summary="list of modules">
+<tr><td><a href="http://github.com/beadsland/nosh_bin/blob/master/doc/cat.md" class="module">cat</a></td></tr>
 <tr><td><a href="http://github.com/beadsland/nosh_bin/blob/master/doc/echo.md" class="module">echo</a></td></tr>
 <tr><td><a href="http://github.com/beadsland/nosh_bin/blob/master/doc/ps.md" class="module">ps</a></td></tr></table>
 
