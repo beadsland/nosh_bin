@@ -17,6 +17,8 @@ for commands emulated in this package.
 
 __<font color="red">To do</font>__
 <br></br>
+* <font color="red">move period=eof to IO record setting
+</font>
 * <font color="red">period as captln eof under nosh
 </font>
 * <font color="red">period as captln eof under pose
