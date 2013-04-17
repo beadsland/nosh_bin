@@ -26,7 +26,7 @@
 %% @author Beads D. Land-Trujillo [http://twitter.com/beadsland]
 %% @copyright 2013 Beads D. Land-Trujillo
 
-%% @version 0.0.1
+%% @version 0.0.2
 
 -define(module, cat).
 
@@ -40,13 +40,13 @@
 -endif.
 % END POSE PACKAGE PATTERN
 
--version("0.0.1").
+-version("0.0.2").
 
 %%
 %% Include files
 %%
 
--define(debug, true).
+%-define(debug, true).
 -include_lib("pose/include/interface.hrl").
 
 -import(gen_command).
@@ -62,7 +62,7 @@
 -export([start/0, start/1, run/3]).
 
 % private callbacks
--export([loop/3, do_run/2]).
+-export([loop/1, do_run/2]).
 
 %%
 %% API Functions
@@ -86,37 +86,31 @@ run(IO, ARG, ENV) -> gen_command:run(IO, ARG, ENV, ?MODULE).
 
 %% @private Callback entry point for gen_command behaviour.
 do_run(IO, _ARG) ->
-  ?DEBUG("io: ~p~n", [IO]),
-  Stdin = IO#std.in,
-  Stdin ! {stdin, self(), captln},
-  receive
-    {'EXIT', Stdin, Reason}					->
-	  ?STDOUT("cat: premature stdin exit: ~p~n", [Reason]);
-	{stdout, Stdin, ".\n"} when IO#std.stop	->
-	  ?DEBUG("cat: eof\n");
-	{stdout, Stdin, eof}					-> 
-	  ?DEBUG("cat: eof\n");
-	{stdout, Stdin, Line}					->
-	  ?STDOUT("cat: ~s", [Line])
-  end,
-  exit(ok).
+  ?MODULE:loop(IO).
 
 %%
 %% Local Functions
 %%
 
 %%@private Export to allow for hotswap.
-loop(IO, Cmd, CmdPid) ->
+loop(IO) ->
+  Stdin = IO#std.in,
+  Stdin ! {stdin, self(), captln},
   receive
-    {purging, _Pid, _Mod} 						-> % chase your tail
-      ?MODULE:loop(IO, Cmd, CmdPid)
-%    {'EXIT', ExitPid, Reason}					->
-%      do_exit(IO, Cmd, CmdPid, ExitPid, Reason);
-%    {stdout, Stdin, Line} when CmdPid == self(),
-%                            Stdin == IO#std.in  ->
-%      do_line(IO, Cmd, CmdPid, Line);
-%    {MsgTag, CmdPid, Payload} 					->
-%      do_output(IO, Cmd, CmdPid, MsgTag, Payload);
-%    Noise when CmdPid == self() 				->
-%      do_noise(IO, Cmd, CmdPid, Noise)
+	{purging, _Pid, _Mod}					-> % chase your tail
+	  ?MODULE:loop(IO);
+    {'EXIT', Stdin, Reason}					->
+	  ?DEBUG("cat: term: ~p~n", [Reason]), exit(ok);
+	{'EXIT', _Pid, _Reason}					->
+	  ?MODULE:loop(IO);
+	{stdout, Stdin, ".\n"} when IO#std.stop	->
+	  ?DEBUG("cat: eof\n"), exit(ok);
+	{stdout, Stdin, eof}					-> 
+	  ?DEBUG("cat: eof\n"), exit(ok);
+	{stdout, Stdin, Line}					->
+	  ?STDOUT(Line),
+	  ?MODULE:loop(IO);
+	Noise									->
+	  ?STDERR("cat: noise: ~p~n", [Noise]),
+	  ?MODULE:loop(IO)
   end.
