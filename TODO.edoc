@@ -1,4 +1,3 @@
-@todo move period=eof to IO record setting
 @todo period as captln eof under nosh
 @todo period as captln eof under pose
 @todo cat multiline
