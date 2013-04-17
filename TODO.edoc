@@ -1,2 +1,2 @@
-@todo cat echos gibberish
+@todo avoid gobbling xterm title hack esc sequence
 @todo cat preserve eof
