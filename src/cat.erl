@@ -86,14 +86,17 @@ run(IO, ARG, ENV) -> gen_command:run(IO, ARG, ENV, ?MODULE).
 
 %% @private Callback entry point for gen_command behaviour.
 do_run(IO, _ARG) ->
+  ?DEBUG("io: ~p~n", [IO]),
   Stdin = IO#std.in,
   Stdin ! {stdin, self(), captln},
   receive
-    {'EXIT', Stdin, Reason}		->
+    {'EXIT', Stdin, Reason}					->
 	  ?STDOUT("cat: premature stdin exit: ~p~n", [Reason]);
-	{stdout, Stdin, eof}		-> 
-	  ?DEBUG("cat: eof~n", []);
-	{stdout, Stdin, Line}		->
+	{stdout, Stdin, ".\n"} when IO#std.stop	->
+	  ?DEBUG("cat: eof\n");
+	{stdout, Stdin, eof}					-> 
+	  ?DEBUG("cat: eof\n");
+	{stdout, Stdin, Line}					->
 	  ?STDOUT("cat: ~s", [Line])
   end,
   exit(ok).
