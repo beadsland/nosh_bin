@@ -53,7 +53,6 @@
 -import(erlang).
 -import(proplists).
 -import(io_lib).
--import(string).
 -import(lists).
 
 %%

@@ -50,10 +50,6 @@
 -include_lib("pose/include/interface.hrl").
 
 -import(gen_command).
--import(string).
--import(lists).
--import(re).
--import(io).
 
 %%
 %% Exported Functions
