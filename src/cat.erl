@@ -89,7 +89,7 @@ run(IO, ARG, ENV) -> gen_command:run(IO, ARG, ENV, ?MODULE).
 
 %% @private Callback entry point for gen_command behaviour.
 do_run(IO, _ARG) ->
-  ?MODULE:loop(IO).
+  do_captln(IO).
 
 %%
 %% Local Functions
@@ -97,24 +97,26 @@ do_run(IO, _ARG) ->
 
 %%@private Export to allow for hotswap.
 loop(IO) ->
-  Stdin = IO#std.in,
-  Stdin ! {stdin, self(), captln},
+  Stdin = IO#std.in,  
   receive
-	{purging, _Pid, _Mod}					-> % chase your tail
-	  ?MODULE:loop(IO);
+    {purging, _Pid, _Mod}					-> % chase your tail
+      ?MODULE:loop(IO);
     {'EXIT', Stdin, Reason}					->
-	  ?DEBUG("cat: term: ~p~n", [Reason]), exit(ok);
-	{'EXIT', _Pid, _Reason}					->
-	  ?MODULE:loop(IO);
-	{stdout, Stdin, ".\n"} when IO#std.stop	->
-	  ?DEBUG("cat: stop\n"), exit(ok);
-	{stdout, Stdin, eof}					-> 
-	  ?DEBUG("cat: eof\n"), exit(ok);
-	{stdout, Stdin, Line}					->
-	  ?STDOUT(Line),
-	  ?MODULE:loop(IO);
-	Noise									->
-	  ?STDERR("cat: noise: ~p~n", [Noise]),
-	  ?MODULE:loop(IO)
+      ?DEBUG("cat: term: ~p~n", [Reason]), exit(ok);
+    {'EXIT', _Pid, _Reason}					->
+      ?MODULE:loop(IO);
+    {stdout, Stdin, ".\n"} when IO#std.stop	->
+      ?DEBUG("cat: stop\n"), exit(ok);
+    {stdout, Stdin, eof}					->
+      ?DEBUG("cat: eof\n"), exit(ok);
+    {stdout, Stdin, Line}					->
+      ?STDOUT(Line), do_captln(IO);
+    Noise									->
+      ?STDERR("cat: noise: ~p~n", [Noise]),
+      do_captln(IO)
   end.
 
+do_captln(IO) ->
+  Stdin = IO#std.in,
+  Stdin ! {stdin, self(), captln},
+  ?MODULE:loop(IO).
