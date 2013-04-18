@@ -17,7 +17,8 @@ for commands emulated in this package.
 
 __<font color="red">To do</font>__
 <br></br>
-* <font color="red">cat preserve eof</font>
+* <font color="red">allow for comment only TODO.edoc
+</font>
 
 
 This is the Bourne shell built-ins command set for the
