@@ -51,6 +51,9 @@
 
 -import(gen_command).
 -import(string).
+-import(lists).
+-import(re).
+-import(io).
 
 %%
 %% Exported Functions
@@ -104,7 +107,7 @@ loop(IO) ->
 	{'EXIT', _Pid, _Reason}					->
 	  ?MODULE:loop(IO);
 	{stdout, Stdin, ".\n"} when IO#std.stop	->
-	  ?DEBUG("cat: eof\n"), exit(ok);
+	  ?DEBUG("cat: stop\n"), exit(ok);
 	{stdout, Stdin, eof}					-> 
 	  ?DEBUG("cat: eof\n"), exit(ok);
 	{stdout, Stdin, Line}					->
@@ -114,3 +117,4 @@ loop(IO) ->
 	  ?STDERR("cat: noise: ~p~n", [Noise]),
 	  ?MODULE:loop(IO)
   end.
+
