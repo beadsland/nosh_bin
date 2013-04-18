@@ -17,8 +17,6 @@ for commands emulated in this package.
 
 __<font color="red">To do</font>__
 <br></br>
-* <font color="red">avoid gobbling xterm title hack esc sequence
-</font>
 * <font color="red">cat preserve eof</font>
 
 
