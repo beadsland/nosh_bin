@@ -26,7 +26,7 @@
 %% @author Beads D. Land-Trujillo [http://twitter.com/beadsland]
 %% @copyright 2013 Beads D. Land-Trujillo
 
-%% @version 0.0.2
+%% @version 0.0.3
 
 -define(module, cat).
 
@@ -40,13 +40,13 @@
 -endif.
 % END POSE PACKAGE PATTERN
 
--version("0.0.2").
+-version("0.0.3").
 
 %%
 %% Include files
 %%
 
-%-define(debug, true).
+-define(debug, true).
 -include_lib("pose/include/interface.hrl").
 
 -import(gen_command).
@@ -61,7 +61,7 @@
 -export([start/0, start/1, run/3]).
 
 % private callbacks
--export([loop/1, do_run/2]).
+-export([loop/2, do_run/2]).
 
 %%
 %% API Functions
@@ -84,35 +84,35 @@ run(IO, ARG, ENV) -> gen_command:run(IO, ARG, ENV, ?MODULE).
 %%
 
 %% @private Callback entry point for gen_command behaviour.
-do_run(IO, _ARG) ->
-  do_captln(IO).
+do_run(IO, ARG) ->
+  do_captln(IO, ARG).
 
 %%
 %% Local Functions
 %%
 
 %%@private Export to allow for hotswap.
-loop(IO) ->
+loop(IO, ARG) ->
   Stdin = IO#std.in,  
   receive
     {purging, _Pid, _Mod}					-> % chase your tail
-      ?MODULE:loop(IO);
+      ?MODULE:loop(IO, ARG);
     {'EXIT', Stdin, Reason}					->
-      ?DEBUG("cat: term: ~p~n", [Reason]), exit(ok);
+      ?DEBUG("~s: term: ~p~n", [ARG#arg.cmd, Reason]), exit(ok);
     {'EXIT', _Pid, _Reason}					->
-      ?MODULE:loop(IO);
+      ?MODULE:loop(IO, ARG);
     {stdout, Stdin, ".\n"} when IO#std.stop	->
-      ?DEBUG("cat: stop\n"), exit(ok);
+      ?DEBUG("~s: stop~n", [ARG#arg.cmd]), exit(ok);
     {stdout, Stdin, eof}					->
-      ?DEBUG("cat: eof\n"), exit(ok);
+      ?DEBUG("~s: eof~n", [ARG#arg.cmd]), exit(ok);
     {stdout, Stdin, Line}					->
-      ?STDOUT(Line), do_captln(IO);
+      ?STDOUT(Line), do_captln(IO, ARG);
     Noise									->
-      ?STDERR("cat: noise: ~p~n", [Noise]),
-      do_captln(IO)
+      ?STDERR("~s: noise: ~p~n", [ARG#arg.cmd, Noise]),
+      do_captln(IO, ARG)
   end.
 
-do_captln(IO) ->
+do_captln(IO, ARG) ->
   Stdin = IO#std.in,
   Stdin ! {stdin, self(), captln},
-  ?MODULE:loop(IO).
+  ?MODULE:loop(IO, ARG).
