@@ -11,7 +11,7 @@ Concatenate inputs and print to standard output.
 
 Copyright (c) 2013 Beads D. Land-Trujillo
 
-__Version:__ 0.0.2
+__Version:__ 0.0.3
 
 __Behaviours:__ [`gen_command`](gen_command.md).
 
