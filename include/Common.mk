@@ -28,26 +28,23 @@ include include/Header.mk
 # All good rules
 #
 
-.PHONY:	all good todo docs compile current neat clean push make
+.PHONY:	all good todo docs compile current neat clean push make docup
 
 all:		push compile good
 
-good:		$(POSEBIN)/pose.beam
+good:		override DEPS := $(GOOD_DEPS)
+# Target-specific variables aren't picked up by dependencies list, 
+# so we move dependency relation to a submake.
+good:		
+	@$(SUBMAKE:_param_=-f include/Common.mk $(POSEBIN)/pose.beam) \
+		| ($(GREP) -v "is up to date"; status=$$?)
 	@$(ERL) $(SUPERL) $(POSURE) $(STOP)
+
+%/ebin/pose.beam:	%/src/pose.erl
+	@$(SUBMAKE:_param_=-C $* compile)
 	
-$(POSEBIN)/pose.beam:
-	@if [ ! -f $(POSEBIN)/pose.beam ]
-	$(error Must compile pose to do good)
-
-#
-# Rules to regenerate documentation
-#
-
-docs:	README.md \
-			$(patsubst src/%.erl, doc/%.md, $(wildcard src/*.erl))
-
-doc/%.md:	src/%.erl
-	@$(CROWBAR:_cmds_=doc)
+ebin/pose.beam:		src/pose.erl
+	@$(SUBMAKE:_param_=compile)
 
 #
 # Temporary todo rules pending proper 2do_go4 implementation
@@ -69,6 +66,15 @@ doc/TODO_head.edoc:		TODO.edoc
 TODO.edoc:	;
 
 #
+# Rules to regenerate documentation
+#
+
+docs:	README.md $(patsubst src/%.erl, doc/%.md, $(wildcard src/*.erl))
+
+doc/%.md:	src/%.erl
+	@$(CROWBAR:_cmds_=doc)
+	
+#
 # Rules for compiling 
 #
 
@@ -86,13 +92,13 @@ clean:		neat make
 		else ($(CROWBAR:_cmds_=clean)); fi
 
 neat:
-	@rm -f *.dump
+	@rm -f *.dump *.stackdump
 
 #
 # Rules for managing revisions and synchronized common files
 #
 
-push:	make
+push:	make docup
 	@if [ "$(DEV)" == yes -a "$(ONLINE)" == yes ]; \
 		then (git push origin master); fi
 
@@ -105,3 +111,8 @@ make:	$(patsubst include/%.mk, \
 include/$(B_PREFIX)%.mk$(B_SUFFIX):		include/%.mk
 	@if [ ! -f $@ ]; \
 		then ($(UNISON) && (test -f $@ || cp $< $@)); fi
+		
+docup:	docs
+	@git add -f doc/*.md
+	@if ! git diff-index --cached --quiet HEAD; \
+		then (git commit doc/*.md -m "updated docs"); fi		
