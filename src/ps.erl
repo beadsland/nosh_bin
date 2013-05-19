@@ -56,6 +56,7 @@
 -import(proplists).
 -import(io_lib).
 -import(lists).
+-import(string).
 -endif.
 % END POSE PACKAGE IMPORTS
 
